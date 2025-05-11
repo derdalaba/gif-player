@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>GIF upload</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<style>
+body {background-color: #12707c;}
+#input {
+	position: relative;
+	left: 5%;
+	width: 90%;
+	top: 10px;
+}
+#_input_file {
+	display: none;
+}
+#upload {
+	display: none;
+}
+.file_text {
+	position: relative;
+	background-color: #a86d00;
+	border: 1px solid #ccc;
+	padding: 6px 12px;
+	cursor: pointer;
+	height: 100px;
+	width: 80%;
+}
+img {
+	display: block;
+	image-orientation:from-image;
+}
+#gif {
+	position: relative;
+	width: 90%;
+	left: 5%;
+}
+
+</style>
+	</head>
+	<body>
+		<div id="input">
+
+			<label for="_input_file" class="file_text">
+				<span id="input_text">wähle datei</span>
+			</label>
+			<input onchange="func()" name="file" type="file" id="_input_file">
+			<label for="upload" class="file_text">
+				<p id="input_text">upload</p>
+			</label>
+			<button id="upload">Upload</button>
+		</div>
+
+
+<script>
+	"use strict";
+	document.getElementById("upload").addEventListener("click", uploadGif);
+	var path;
+	var file;
+	function uploadGif() {
+		if (file) {
+			const response = fetch("http://gif-uploader.local/", {
+				method: "POST",
+				body: file
+			});
+	}
+	function func() {
+		path = document.getElementById("_input_file").value;
+		file = document.getElementById("_input_file").files[0];
+		document.getElementById("input_text").innerHTML = file.name;
+		const newDiv = document.createElement("div");
+		//const attrib = "src=\"file:///" + path + "\"" + " alt=\"file:///" + path + "\"";
+		const newContent = document.createElement("img");
+		newContent.src = URL.createObjectURL(file);
+		newContent.alt = path;
+		newContent.id = "gif";
+		newDiv.appendChild(newContent);
+		const currentDiv = document.getElementById("input");
+		document.body.insertBefore(newDiv, currentDiv);
+	}
+
+</script>
+	</body>
+</html>
